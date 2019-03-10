@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by weijiangan on 07/12/2016.
- */
+
 class Character {
     int FRAMES = 11;
     int x, y;
@@ -49,4 +47,5 @@ class Character {
         g.dispose();
         return bi;
     }
+    
 }

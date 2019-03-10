@@ -6,9 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by weijiangan on 28/11/2016.
- */
+
 public class Game implements ActionListener, KeyListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-/**
- * Created by weijiangan on 28/11/2016.
- */
+
 public class Board extends JPanel implements ComponentListener {
     Timer timer;
     private final int SPAWN_INTERVAL = 35;
@@ -46,7 +44,7 @@ public class Board extends JPanel implements ComponentListener {
         scoreWidth = 0;
         PLAYER_X = (int) (0.15 * frameWidth);
         SNAIL_SPEED = -7;
-        NUM_OF_SNAILS = 5;
+        NUM_OF_SNAILS = 1;
         enemies = new ArrayList<>();
         scoreFont = new Font("Calibri", Font.BOLD, 56);
         cloud = new Terrain(-2, "resources/Tiles/Cloud_1.png");
@@ -70,7 +68,7 @@ public class Board extends JPanel implements ComponentListener {
                     mountain.nextPos();
                     player.nextFrame();
                     player.updatePos();
-                    if (i == SPAWN_INTERVAL) {
+                    if (i == SPAWN_INTERVAL) {	//35
                         spawnEnemies();
                         score++;
                         i = -1;
@@ -78,7 +76,7 @@ public class Board extends JPanel implements ComponentListener {
                     iter = enemies.iterator();
                     while (iter.hasNext()) {
                         Enemy tmp = iter.next();
-                        if (tmp.getX() < -150) {
+                        if (tmp.getX() < -150) {	//remove if off screen
                             enemies.remove(tmp);
                             break;
                         }
@@ -276,17 +274,14 @@ public class Board extends JPanel implements ComponentListener {
     }
 
     private void spawnEnemies() {
+    	//System.out.println(enemies.size());
         if (enemies.size() < NUM_OF_SNAILS) {
-            if (genEnemyChance() > 7) {
-                Enemy enemy = new Enemy(frameWidth + 150, LAND_HEIGHT - 81 + 5, SNAIL_SPEED);
+                Enemy enemy = new Enemy(frameWidth + 150, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
                 enemies.add(enemy);
-            }
+            
         }
     }
 
-    private int genEnemyChance() {
-        return random.nextInt(10) + 1;
-    }
 
     public void checkCollisions() {
         iter = enemies.iterator();
