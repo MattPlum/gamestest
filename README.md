@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Yogi and the Snails
 Yea it is a terrible name but it is a very apt description of the game.
 
@@ -10,3 +11,6 @@ Majority of the artwork used are taken from Kenney's Platformer Art: Pixel Redux
 http://kenney.nl/assets/platformer-art-pixel-redux
 
 Other graphics and the meny were hand-drawn by my friend Samuel Yoong.
+=======
+# gamestest
+>>>>>>> 0f2f4a611ec6e198a05dc27296c698e7f411cfb1
