@@ -74,6 +74,9 @@ public class Player extends Character {
         if (!GODMODE)
             lives += (n);
     }
+    public void transform() {
+    	
+    }
 
     public void updatePos() {
         x += dx;

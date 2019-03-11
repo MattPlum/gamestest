@@ -13,13 +13,13 @@ public class Game implements ActionListener, KeyListener {
     private static final int START_BUTTON_W = 273, START_BUTTON_H = 108;
     private boolean INGAME;
     private static JFrame f;
-    private JPanel topPanel;
-    private JButton pauseButton;
+     JPanel topPanel;
+     JButton pauseButton;
     private JButton startGame;
     private Board board;
     private Menu menu;
     private Story story;
-    private Timer timer;
+    Timer timer;
     private Clip clip;
 
     private Game() throws IOException {
@@ -151,7 +151,8 @@ public class Game implements ActionListener, KeyListener {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-        } else if (!INGAME) {
+        }
+        else if (!INGAME) {
             story.keyReleased(e);
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 topPanel.remove(story);

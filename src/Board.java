@@ -12,6 +12,7 @@ public class Board extends JPanel implements ComponentListener {
     private final int SPAWN_INTERVAL = 35;
     private final int INVULN_DUR = 30;
     private boolean PLAYGAME;
+    private boolean PAUSEGAME;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
     private int WATER_HEIGHT = (int) (0.95 * frameHeight);
@@ -25,6 +26,7 @@ public class Board extends JPanel implements ComponentListener {
     private int i = 0;
     private int score;
     private int scoreWidth;
+    int num = 0;
     private Font scoreFont;
     private FontMetrics metric;
     private Random random;
@@ -32,6 +34,12 @@ public class Board extends JPanel implements ComponentListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private Iterator<Enemy> iter;
+    private JPanel topPanel;
+    private Game game;
+    private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    Story story = new Story(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
     public Board() throws Exception {
         addComponentListener(this);
@@ -108,8 +116,8 @@ public class Board extends JPanel implements ComponentListener {
             drawPlayer(g);
             drawEnemies(g);
             drawHUD(g);
-        } else {
-            gameOver(g);
+        } else if(PAUSEGAME){
+            slothScreen(g);
         }
     }
 
@@ -212,6 +220,13 @@ public class Board extends JPanel implements ComponentListener {
         g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2, 100);
         g.drawString(message2, frameWidth/2-metric.stringWidth(message2)/2, frameHeight - 100);
     }
+    
+    private void slothScreen(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, frameWidth, frameHeight);
+
+
+    }
 
     @Override
     public void componentResized(ComponentEvent e) {
@@ -231,7 +246,7 @@ public class Board extends JPanel implements ComponentListener {
         iter = enemies.iterator();
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
-            tmp.setY(LAND_HEIGHT - 81 + 5);
+            tmp.setY(LAND_HEIGHT - 400 + 5);
         }
         timer.start();
     }
@@ -250,10 +265,12 @@ public class Board extends JPanel implements ComponentListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE) {
-            if (PLAYGAME)
+            if (PLAYGAME) {
                 player.jump(true);
-            else
-                restartGame();
+            }
+            else if((PAUSEGAME)) {
+                PLAYGAME=true;
+            }
         } else if (key == KeyEvent.VK_LEFT) {
             player.setDx(-9);
         } else if (key == KeyEvent.VK_RIGHT) {
@@ -273,14 +290,14 @@ public class Board extends JPanel implements ComponentListener {
         }
     }
 
+
     private void spawnEnemies() {
-    	//System.out.println(enemies.size());
         if (enemies.size() < NUM_OF_SNAILS) {
-                Enemy enemy = new Enemy(frameWidth + 150, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
-                enemies.add(enemy);
-            
+            Enemy enemy = new Enemy(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED, num);
+            enemies.add(enemy);
+            num++;
         }
-    }
+}
 
 
     public void checkCollisions() {
@@ -303,7 +320,17 @@ public class Board extends JPanel implements ComponentListener {
             for(int i = firstI; i < r.getWidth() + firstI; i++) { //
                 for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
                     if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
-                        player.changeLives(-1);
+                       // player.changeLives(-1);
+                        PLAYGAME = false;
+
+//                    	if (timer.isRunning()) {
+//                            timer.stop();
+//                            game.timer.start();  
+//                        } else {
+//                            timer.stop();
+//                            game.timer.start();
+//
+//                        }
                         if (!player.isGODMODE())
                             player.setInvulnDur(INVULN_DUR);
                         break;
@@ -312,6 +339,7 @@ public class Board extends JPanel implements ComponentListener {
             }
         }
     }
+
 
     public void restartGame() {
         player.setX((int) (0.15 * frameWidth));
