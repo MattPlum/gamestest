@@ -12,7 +12,7 @@ public class Board extends JPanel implements ComponentListener {
     private final int SPAWN_INTERVAL = 35;
     private final int INVULN_DUR = 30;
     private boolean PLAYGAME;
-    private boolean PAUSEGAME;
+    private boolean PAUSEGAME = false;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
     private int WATER_HEIGHT = (int) (0.95 * frameHeight);
@@ -26,7 +26,7 @@ public class Board extends JPanel implements ComponentListener {
     private int i = 0;
     private int score;
     private int scoreWidth;
-    int num = 0;
+    int enemyNumber = 0;
     private Font scoreFont;
     private FontMetrics metric;
     private Random random;
@@ -116,9 +116,7 @@ public class Board extends JPanel implements ComponentListener {
             drawPlayer(g);
             drawEnemies(g);
             drawHUD(g);
-        } else if(PAUSEGAME){
-            slothScreen(g);
-        }
+        } 
     }
 
     private void drawSky(Graphics g) {
@@ -222,10 +220,14 @@ public class Board extends JPanel implements ComponentListener {
     }
     
     private void slothScreen(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, frameWidth, frameHeight);
+        String message1 = "You failed to escape the snails!";
+        g.setColor(Color.WHITE);
+        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
+        g.setFont(largeScoreFont);
+        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2, 100);
 
-
+        timer.stop();
+           repaint();
     }
 
     @Override
@@ -265,25 +267,32 @@ public class Board extends JPanel implements ComponentListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE) {
-            if (PLAYGAME) {
+            if (PLAYGAME){
                 player.jump(true);
             }
-            else if((PAUSEGAME)) {
-                PLAYGAME=true;
-            }
+          
+        
         } else if (key == KeyEvent.VK_LEFT) {
             player.setDx(-9);
         } else if (key == KeyEvent.VK_RIGHT) {
             player.setDx(9);
+        }else if (key == KeyEvent.VK_M) {
+            if (!timer.isRunning()) {
+                game.timer.start();
+                timer.start();
+                PAUSEGAME = false;
+                System.out.println("h");
+            } 
+            
         }
     }
 
     public void keyReleased(KeyEvent e) throws Exception {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_SPACE) {
+        if (key == KeyEvent.VK_SPACE ) {
             player.jump(false);
-        } else if (key == KeyEvent.VK_LEFT) {
+        }else if (key == KeyEvent.VK_LEFT) {
             player.setDx(0);
         } else if (key == KeyEvent.VK_RIGHT) {
             player.setDx(0);
@@ -293,9 +302,10 @@ public class Board extends JPanel implements ComponentListener {
 
     private void spawnEnemies() {
         if (enemies.size() < NUM_OF_SNAILS) {
-            Enemy enemy = new Enemy(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED, num);
+            Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
             enemies.add(enemy);
-            num++;
+          
+
         }
 }
 
@@ -304,11 +314,21 @@ public class Board extends JPanel implements ComponentListener {
         iter = enemies.iterator();
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
-            collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI());
+            if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
+               enemies.remove(tmp);
+//               if (timer.isRunning()) {
+//                   timer.stop();
+//                   game.timer.start();
+//                   PAUSEGAME= true;
+//                   
+//               } 
+               break;
+                   
+            }
         }
     }
 
-    private void collisionHelper(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2) {
+    private boolean collisionHelper(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2) {
         if(r1.intersects(r2)) {
             Rectangle r = r1.intersection(r2);
 
@@ -321,23 +341,17 @@ public class Board extends JPanel implements ComponentListener {
                 for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
                     if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
                        // player.changeLives(-1);
-                        PLAYGAME = false;
-
-//                    	if (timer.isRunning()) {
-//                            timer.stop();
-//                            game.timer.start();  
-//                        } else {
-//                            timer.stop();
-//                            game.timer.start();
-//
-//                        }
-                        if (!player.isGODMODE())
-                            player.setInvulnDur(INVULN_DUR);
+                   
                         break;
                     }
                 }
             }
+            return true;
+
+        }else {
+        	return false;
         }
+
     }
 
 

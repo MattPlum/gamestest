@@ -11,7 +11,7 @@ public class Game implements ActionListener, KeyListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private static final int START_BUTTON_W = 273, START_BUTTON_H = 108;
-    private boolean INGAME;
+     boolean INGAME;
     private static JFrame f;
      JPanel topPanel;
      JButton pauseButton;
