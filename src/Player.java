@@ -34,9 +34,12 @@ public class Player extends Character {
         this.y = y;
         sprite = new Image[FRAMES];
         for (int i = 0; i < FRAMES; i++) {
-            sprite[i] = new ImageIcon(this.getClass().getResource("resources/Player/p3_walk/PNG/p3_walk" + String.format("%02d", i+1) + ".png")).getImage();
+        	Image newImage = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charwalk" + String.format("%02d", i+1) + ".png")).getImage().getScaledInstance(150, 205, Image.SCALE_DEFAULT);
+
+            sprite[i] = newImage;
         }
-        jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p3_jump.png")).getImage();
+        
+        jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);;
         clip = AudioSystem.getClip();
         clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Jump.wav").getPath())));
         this.curFrame = 0;
@@ -45,7 +48,10 @@ public class Player extends Character {
         invulnDur = 0;
         velocity = 40;
     }
-
+    private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+        BufferedImage dest = src.getSubimage(0, 0, rect.width, rect.height);
+        return dest; 
+     }
     public void setDx(int dx) {
         this.dx = dx;
     }

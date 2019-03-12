@@ -34,7 +34,7 @@ public class Game implements ActionListener, KeyListener {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }
-        f = new JFrame("A Java Game");
+        f = new JFrame("LEAD100 Video Game Project");
         f.setMinimumSize(new Dimension(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4));
         f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         f.setResizable(true);

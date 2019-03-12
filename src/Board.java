@@ -64,7 +64,7 @@ public class Board extends JPanel implements ComponentListener {
         mountain = new Terrain(-1, "resources/Background/Mountains.png");
         player = new Player();
         player.setX(PLAYER_X);
-        timer = new Timer(25, new ActionListener() {
+        timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (PLAYGAME) {

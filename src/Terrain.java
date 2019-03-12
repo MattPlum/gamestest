@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by weijiangan on 03/12/2016.
- */
+
 public class Terrain {
     private int initX;
     private int w, h;

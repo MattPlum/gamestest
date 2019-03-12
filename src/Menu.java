@@ -15,9 +15,9 @@ public class Menu extends JPanel{
     private boolean isSplash;
     private JPanel screen = new JPanel();
 
-    final BufferedImage bg = ImageIO.read (new File(getClass().getResource("resources/Menu/BG.jpg").getPath()));
-    final BufferedImage yogi = ImageIO.read (new File(getClass().getResource("resources/Menu/alienBack2.png").getPath()));
-    final BufferedImage logo = ImageIO.read (new File(getClass().getResource("resources/Menu/logo.png").getPath()));
+    final BufferedImage bg = ImageIO.read (new File(getClass().getResource("resources/Menu/BG_img.jpg").getPath()));
+    final BufferedImage yogi = ImageIO.read (new File(getClass().getResource("resources/Player/p4_walk/PNG/charjump01.png").getPath()));
+    //final BufferedImage logo = ImageIO.read (new File(getClass().getResource("resources/Menu/logo.png").getPath()));
     final BufferedImage startButton = ImageIO.read (new File(getClass().getResource("resources/Menu/startButton.png").getPath()));
 
 	public Menu (boolean isSplash) throws IOException {
@@ -34,10 +34,7 @@ public class Menu extends JPanel{
         //draw BG
         g.drawImage(bg, 0, 0, iWIDTH, iHEIGHT, null);
 
-        if (iWIDTH != (WIDTH + 170)) {
-            iWIDTH = iWIDTH + 1;
-            iHEIGHT = iHEIGHT + 1;
-        }
+     
 
         //draw Yogi (our character lol)
         int yogiWIDTH = 233, yogiHEIGHT = 227;
@@ -45,7 +42,7 @@ public class Menu extends JPanel{
 
         //draw logo
         int logoWIDTH = 263, logoHEIGHT = 176;
-        g.drawImage(logo, WIDTH / 2 - (logoWIDTH / 2), 30, logoWIDTH, logoHEIGHT, null);
+        //g.drawImage(logo, WIDTH / 2 - (logoWIDTH / 2), 30, logoWIDTH, logoHEIGHT, null);
 
         //draw start button
         buttonWIDTH = 273;
@@ -53,8 +50,8 @@ public class Menu extends JPanel{
         g.drawImage(startButton, WIDTH / 2 - (buttonWIDTH / 2), HEIGHT / 2 - buttonHEIGHT + 30, buttonWIDTH, buttonHEIGHT, null);
 
         //drawing the sun
-        g.setColor(new Color(255, 231, 149));
-        g.fillOval(1600 - 50 - 140, 25, 140, 140);
+//        g.setColor(new Color(255, 231, 149));
+//        g.fillOval(1600 - 50 - 140, 25, 140, 140);
 
 		repaint();
 	}
