@@ -76,7 +76,7 @@ public class Board extends JPanel implements ComponentListener {
                     mountain.nextPos();
                     player.nextFrame();
                     player.updatePos();
-                    if (i == SPAWN_INTERVAL) {	//35
+                    if (i == SPAWN_INTERVAL) {	//at 35 spawn enemies, decrease i then add i repeatedly
                         spawnEnemies();
                         score++;
                         i = -1;
@@ -116,8 +116,18 @@ public class Board extends JPanel implements ComponentListener {
             drawPlayer(g);
             drawEnemies(g);
             drawHUD(g);
-        } 
+        } if(PAUSEGAME) {
+        	pauseGame();
+        	slothScreen(g);
+        }
     }
+    
+    public void pauseGame() {
+	      if (timer.isRunning()) {
+		      timer.stop();
+		      //game.timer.start();
+	      } 
+      }
 
     private void drawSky(Graphics g) {
         g.setColor(new Color(181, 229, 216));
@@ -220,14 +230,9 @@ public class Board extends JPanel implements ComponentListener {
     }
     
     private void slothScreen(Graphics g) {
-        String message1 = "You failed to escape the snails!";
-        g.setColor(Color.WHITE);
-        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
-        g.setFont(largeScoreFont);
-        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2, 100);
-
-        timer.stop();
-           repaint();
+    	Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver.png")).getImage();
+        g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
+        
     }
 
     @Override
@@ -270,19 +275,19 @@ public class Board extends JPanel implements ComponentListener {
             if (PLAYGAME){
                 player.jump(true);
             }
-          
+            if(PAUSEGAME) {
+                if (!timer.isRunning()) {
+                    timer.start();
+                    PAUSEGAME = false;
+                } 
+            }
         
         } else if (key == KeyEvent.VK_LEFT) {
             player.setDx(-9);
         } else if (key == KeyEvent.VK_RIGHT) {
             player.setDx(9);
         }else if (key == KeyEvent.VK_M) {
-            if (!timer.isRunning()) {
-                game.timer.start();
-                timer.start();
-                PAUSEGAME = false;
-                System.out.println("h");
-            } 
+   
             
         }
     }
@@ -291,7 +296,9 @@ public class Board extends JPanel implements ComponentListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE ) {
-            player.jump(false);
+        	if(!PAUSEGAME) {
+        		player.jump(false);
+        	}
         }else if (key == KeyEvent.VK_LEFT) {
             player.setDx(0);
         } else if (key == KeyEvent.VK_RIGHT) {
@@ -304,7 +311,9 @@ public class Board extends JPanel implements ComponentListener {
         if (enemies.size() < NUM_OF_SNAILS) {
             Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
             enemies.add(enemy);
-          
+//            Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
+//            enemies.add(enemy2);
+
 
         }
 }
@@ -316,12 +325,8 @@ public class Board extends JPanel implements ComponentListener {
             Enemy tmp = iter.next();
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
                enemies.remove(tmp);
-//               if (timer.isRunning()) {
-//                   timer.stop();
-//                   game.timer.start();
-//                   PAUSEGAME= true;
-//                   
-//               } 
+               PAUSEGAME=true;
+
                break;
                    
             }
