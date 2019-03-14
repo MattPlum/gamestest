@@ -24,6 +24,9 @@ public class Board extends JPanel implements ComponentListener {
     private int SNAIL_SPEED;
     private int NUM_OF_SNAILS;
     private int i = 0;
+    int count =1;
+    boolean isSloth=false;
+    boolean isSnail=false;
     private int score;
     private int scoreWidth;
     int enemyNumber = 0;
@@ -77,7 +80,7 @@ public class Board extends JPanel implements ComponentListener {
                     player.nextFrame();
                     player.updatePos();
                     if (i == SPAWN_INTERVAL) {	//at 35 spawn enemies, decrease i then add i repeatedly
-                        spawnEnemies();
+                        spawnEnemies(count);
                         score++;
                         i = -1;
                     }
@@ -118,7 +121,11 @@ public class Board extends JPanel implements ComponentListener {
             drawHUD(g);
         } if(PAUSEGAME) {
         	pauseGame();
-        	slothScreen(g);
+        	if(isSloth) {
+        		slothScreen(g);
+        	}else if(isSnail) {
+        		snailScreen(g);
+        	}
         }
     }
     
@@ -234,6 +241,11 @@ public class Board extends JPanel implements ComponentListener {
         g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
         
     }
+    private void snailScreen(Graphics g) {
+    	Image gameOver = new ImageIcon(this.getClass().getResource("resources/Plyr/heal_1.png")).getImage();
+        g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
+        
+    }
 
     @Override
     public void componentResized(ComponentEvent e) {
@@ -307,12 +319,22 @@ public class Board extends JPanel implements ComponentListener {
     }
 
 
-    private void spawnEnemies() {
+    private void spawnEnemies(int x) {
         if (enemies.size() < NUM_OF_SNAILS) {
-            Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
-            enemies.add(enemy);
-//            Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
-//            enemies.add(enemy2);
+        	if(x ==1) {
+        		Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
+            	enemies.add(enemy);
+            	count =2;
+        	}else if(x == 2) {
+              Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
+              enemies.add(enemy2);
+              count =3;
+        	}else if (x ==3) {
+        	    Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
+                enemies.add(enemy2);
+                count =1;
+        	}
+
 
 
         }
@@ -324,8 +346,17 @@ public class Board extends JPanel implements ComponentListener {
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
-               enemies.remove(tmp);
-               PAUSEGAME=true;
+            	
+            	System.out.println(tmp.getClass().getSimpleName());
+               if(tmp.getClass().getSimpleName() =="Sloth" ) {
+            	   isSloth = true;
+            	   isSnail = false;
+               }else if(tmp.getClass().getSimpleName() == "Snail") {
+            	   isSnail=true;
+            	   isSloth=false;
+               }
+            	enemies.remove(tmp);
+            	PAUSEGAME=true;
 
                break;
                    
