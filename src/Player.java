@@ -39,7 +39,7 @@ public class Player extends Character {
             sprite[i] = newImage;
         }
         
-        jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);;
+        jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);
         clip = AudioSystem.getClip();
         clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Jump.wav").getPath())));
         this.curFrame = 0;

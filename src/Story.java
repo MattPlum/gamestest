@@ -16,12 +16,12 @@ public class Story extends JPanel implements KeyListener {
     private int counter = 0;
 
     private Image[] scenes = new Image[] {
-            new ImageIcon(this.getClass().getResource("resources/Story/0.jpg")).getImage(),
-            new ImageIcon(this.getClass().getResource("resources/Story/1.jpg")).getImage(),
-            new ImageIcon(this.getClass().getResource("resources/Story/2.jpg")).getImage(),
-            new ImageIcon(this.getClass().getResource("resources/Story/3.jpg")).getImage(),
-            new ImageIcon(this.getClass().getResource("resources/Story/4.jpg")).getImage(),
-            new ImageIcon(this.getClass().getResource("resources/Story/5.jpg")).getImage(),
+            new ImageIcon(this.getClass().getResource("resources/Story/welcome.png")).getImage(),
+            new ImageIcon(this.getClass().getResource("resources/Story/how_to_play.png")).getImage(),
+//            new ImageIcon(this.getClass().getResource("resources/Story/2.jpg")).getImage(),
+//            new ImageIcon(this.getClass().getResource("resources/Story/3.jpg")).getImage(),
+//            new ImageIcon(this.getClass().getResource("resources/Story/4.jpg")).getImage(),
+//            new ImageIcon(this.getClass().getResource("resources/Story/5.jpg")).getImage(),
     };
 
     public Story(int w, int h) {

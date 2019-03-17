@@ -26,7 +26,8 @@ public class Board extends JPanel implements ComponentListener {
     private int i = 0;
     int count =1;
     boolean isSloth=false;
-    boolean isSnail=false;
+    boolean isSquid=false;
+    boolean isSurvey=false;
     private int score;
     private int scoreWidth;
     int enemyNumber = 0;
@@ -42,7 +43,7 @@ public class Board extends JPanel implements ComponentListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     Story story = new Story(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+    boolean showScreen = false;
 
     public Board() throws Exception {
         addComponentListener(this);
@@ -123,8 +124,10 @@ public class Board extends JPanel implements ComponentListener {
         	pauseGame();
         	if(isSloth) {
         		slothScreen(g);
-        	}else if(isSnail) {
-        		snailScreen(g);
+        	}else if(isSquid) {
+        		squidScreen(g);
+        	}else if(isSurvey) {
+        		surveyScreen(g);
         	}
         }
     }
@@ -216,7 +219,25 @@ public class Board extends JPanel implements ComponentListener {
         }
         //g.drawImage(cross, frameWidth - 75, 25, null);
     }
-
+    
+    private void slothScreen(Graphics g) {
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/sloth_answer2.png")).getImage();
+        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
+    private void squidScreen(Graphics g) {
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/muscle_answer.png")).getImage();
+        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
+    private void surveyScreen(Graphics g) {
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/survey_answer.png")).getImage();
+        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
     private void gameOver(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, frameWidth, frameHeight);
@@ -236,16 +257,7 @@ public class Board extends JPanel implements ComponentListener {
         g.drawString(message2, frameWidth/2-metric.stringWidth(message2)/2, frameHeight - 100);
     }
     
-    private void slothScreen(Graphics g) {
-    	Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver.png")).getImage();
-        g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
-        
-    }
-    private void snailScreen(Graphics g) {
-    	Image gameOver = new ImageIcon(this.getClass().getResource("resources/Plyr/heal_1.png")).getImage();
-        g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
-        
-    }
+
 
     @Override
     public void componentResized(ComponentEvent e) {
@@ -279,11 +291,12 @@ public class Board extends JPanel implements ComponentListener {
     @Override
     public void componentHidden(ComponentEvent e) {}
 
+   
 
     public void keyPressed(KeyEvent e) throws Exception {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_SPACE) {
+        if (key == KeyEvent.VK_SPACE && !showScreen) {
             if (PLAYGAME){
                 player.jump(true);
             }
@@ -291,6 +304,7 @@ public class Board extends JPanel implements ComponentListener {
                 if (!timer.isRunning()) {
                     timer.start();
                     PAUSEGAME = false;
+                    player.jump(false);
                 } 
             }
         
@@ -298,8 +312,8 @@ public class Board extends JPanel implements ComponentListener {
             player.setDx(-9);
         } else if (key == KeyEvent.VK_RIGHT) {
             player.setDx(9);
-        }else if (key == KeyEvent.VK_M) {
-   
+        }else if (key == KeyEvent.VK_R) {
+        	restartGame();
             
         }
     }
@@ -308,9 +322,9 @@ public class Board extends JPanel implements ComponentListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE ) {
-        	if(!PAUSEGAME) {
         		player.jump(false);
-        	}
+        		showScreen=false;
+        	
         }else if (key == KeyEvent.VK_LEFT) {
             player.setDx(0);
         } else if (key == KeyEvent.VK_RIGHT) {
@@ -326,15 +340,18 @@ public class Board extends JPanel implements ComponentListener {
             	enemies.add(enemy);
             	count =2;
         	}else if(x == 2) {
-              Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
-              enemies.add(enemy2);
+              Enemy enemy = new Squid(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+              enemies.add(enemy);
               count =3;
         	}else if (x ==3) {
-        	    Enemy enemy2 = new Snail(frameWidth + 1600, LAND_HEIGHT - 100 + 5, SNAIL_SPEED);
-                enemies.add(enemy2);
-                count =1;
+        	    Enemy enemy = new Survey(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+                enemies.add(enemy);
+                //count =1;
         	}
-
+        	else {
+        		PLAYGAME=false;
+        		PAUSEGAME=false;
+        	}
 
 
         }
@@ -345,18 +362,23 @@ public class Board extends JPanel implements ComponentListener {
         iter = enemies.iterator();
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
+            isSloth=false;
+            isSquid=false;
+            isSurvey=false;
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
             	
             	System.out.println(tmp.getClass().getSimpleName());
                if(tmp.getClass().getSimpleName() =="Sloth" ) {
             	   isSloth = true;
-            	   isSnail = false;
-               }else if(tmp.getClass().getSimpleName() == "Snail") {
-            	   isSnail=true;
-            	   isSloth=false;
+               }else if(tmp.getClass().getSimpleName() == "Squid") {
+            	   isSquid=true;
+               }else if(tmp.getClass().getSimpleName() == "Survey") {
+            	
+            	   isSurvey=true;
                }
             	enemies.remove(tmp);
             	PAUSEGAME=true;
+            	//timer.setDelay(40);;
 
                break;
                    
@@ -393,10 +415,12 @@ public class Board extends JPanel implements ComponentListener {
 
     public void restartGame() {
         player.setX((int) (0.15 * frameWidth));
-        player.setLives(3);
+        player.setY(0);
+       // player.setLives(3);
         enemies.clear();
         score = 0;
         PLAYGAME = true;
+        count=1;
         timer.start();
     }
 }
