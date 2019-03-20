@@ -10,15 +10,11 @@ import java.util.Random;
 public class Board extends JPanel implements ComponentListener {
     Timer timer;
     private final int SPAWN_INTERVAL = 35;
-    private final int INVULN_DUR = 30;
     private boolean PLAYGAME;
     private boolean PAUSEGAME = false;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
-    private int WATER_HEIGHT = (int) (0.95 * frameHeight);
-    private int MOUNTAIN_HEIGHT = (int) (0.82 * frameWidth);
-    private int MOON_X = (int) (0.8 * frameHeight);
-    private int MOON_Y = (int) (0.12 * frameWidth);
+
     private int PLAYER_X;
     private int PLAYER_Y;
     private int SNAIL_SPEED;
@@ -33,8 +29,7 @@ public class Board extends JPanel implements ComponentListener {
     int enemyNumber = 0;
     private Font scoreFont;
     private FontMetrics metric;
-    private Random random;
-    private Terrain cloud, ground, ground2, water, water2, mountain;
+    private Terrain ground, ground2, background;
     private Player player;
     private ArrayList<Enemy> enemies;
     private Iterator<Enemy> iter;
@@ -51,7 +46,6 @@ public class Board extends JPanel implements ComponentListener {
         this.frameWidth = getWidth();
         this.frameHeight = getHeight();
         score = 0;
-        random = new Random();
         setLayout(null);
         scoreWidth = 0;
         PLAYER_X = (int) (0.15 * frameWidth);
@@ -59,25 +53,21 @@ public class Board extends JPanel implements ComponentListener {
         NUM_OF_SNAILS = 1;
         enemies = new ArrayList<>();
         scoreFont = new Font("Calibri", Font.BOLD, 56);
-        cloud = new Terrain(-2, "resources/Tiles/Cloud_1.png");
-        cloud.scaleSprite(0.2f);
+        //cloud.scaleSprite(0.2f);
         ground = new Terrain(-5, "resources/Tiles/grassMid.png");
         ground2 = new Terrain(-5, "resources/Tiles/grassCenter.png");
-        water = new Terrain(-15, "resources/Tiles/liquidWaterTop_mid.png");
-        water2 = new Terrain(-15, "resources/Tiles/liquidWater.png");
-        mountain = new Terrain(-1, "resources/Background/Mountains.png");
+
+        background = new Terrain(-1, "resources/Background/UD2.jpg");
+        //background.scaleSprite(3200, 850);
         player = new Player();
         player.setX(PLAYER_X);
         timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (PLAYGAME) {
-                    cloud.nextPos();
                     ground.nextPos();
                     ground2.nextPos();
-                    water.nextPos();
-                    water2.nextPos();
-                    mountain.nextPos();
+                    background.nextPos();
                     player.nextFrame();
                     player.updatePos();
                     if (i == SPAWN_INTERVAL) {	//at 35 spawn enemies, decrease i then add i repeatedly
@@ -111,15 +101,11 @@ public class Board extends JPanel implements ComponentListener {
         super.paintComponent(g);
 
         if (PLAYGAME) {
-            drawSky(g);
-            drawMoon(g);
-            drawCloud(g);
             drawMountain(g);
             drawLand(g);
-            drawWater(g);
             drawPlayer(g);
             drawEnemies(g);
-            drawHUD(g);
+        //    drawHUD(g);
         } if(PAUSEGAME) {
         	pauseGame();
         	if(isSloth) {
@@ -139,24 +125,11 @@ public class Board extends JPanel implements ComponentListener {
 	      } 
       }
 
-    private void drawSky(Graphics g) {
-        g.setColor(new Color(181, 229, 216));
-        g.fillRect(0, 0, frameWidth, (int) (frameHeight * 0.8));
-    }
 
-    private void drawMoon(Graphics g) {
-        g.setColor(new Color(255, 235, 153));
-        g.fillOval(MOON_X, MOON_Y, 100, 100);
-    }
-
-    private void drawCloud(Graphics g) {
-        for (int x = cloud.getInitX(); x < frameWidth; x += cloud.getW())
-            g.drawImage(cloud.getSprite(), x, (int) (frameHeight * 0.1), null);
-    }
 
     private void drawMountain(Graphics g) {
-        for (int x = mountain.getInitX(); x < frameWidth; x += mountain.getW())
-            g.drawImage(mountain.getSprite(), x, MOUNTAIN_HEIGHT, null);
+        for (int x = background.getInitX(); x < frameWidth; x += background.getW())
+            g.drawImage(background.getSprite(), x, 0, null);
     }
 
     private void drawLand(Graphics g) {
@@ -173,17 +146,7 @@ public class Board extends JPanel implements ComponentListener {
         }
     }
 
-    private void drawWater(Graphics g) {
-        for (int y = WATER_HEIGHT; y < frameHeight; y += water.getH()) {
-            if (y == WATER_HEIGHT) {
-                for (int x = water.getInitX(); x < frameWidth; x += water.getW())
-                    g.drawImage(water.getSprite(), x, y, null);
-            } else {
-                for (int x = water.getInitX(); x < frameWidth; x += water2.getW())
-                    g.drawImage(water2.getSprite(), x, y, null);
-            }
-        }
-    }
+ 
 
     private void drawPlayer(Graphics g) {
         if (player.isGODMODE() && player.getInvulnDur() % 2 == 0)
@@ -265,15 +228,13 @@ public class Board extends JPanel implements ComponentListener {
         frameHeight = getHeight();
         frameWidth = getWidth();
         LAND_HEIGHT = (int) (0.85 * frameHeight);
-        WATER_HEIGHT = (int) (0.92 * frameHeight);
-        MOUNTAIN_HEIGHT = (LAND_HEIGHT - 500);
+    
         PLAYER_X = (int) (0.15 * frameWidth);
         PLAYER_Y = LAND_HEIGHT - player.getSprite().getHeight(null) + 5;
         player.setX(PLAYER_X);
         player.setY(PLAYER_Y);
         player.setLAND_Y(PLAYER_Y);
-        MOON_X = (int) (0.8 * frameWidth);
-        MOON_Y = (int) (0.08 * frameHeight);
+     
         iter = enemies.iterator();
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
@@ -301,11 +262,10 @@ public class Board extends JPanel implements ComponentListener {
                 player.jump(true);
             }
             if(PAUSEGAME) {
-                if (!timer.isRunning()) {
                     timer.start();
                     PAUSEGAME = false;
                     player.jump(false);
-                } 
+               
             }
         
         } else if (key == KeyEvent.VK_LEFT) {
@@ -415,7 +375,7 @@ public class Board extends JPanel implements ComponentListener {
 
     public void restartGame() {
         player.setX((int) (0.15 * frameWidth));
-        player.setY(0);
+        player.setY(PLAYER_Y);
        // player.setLives(3);
         enemies.clear();
         score = 0;

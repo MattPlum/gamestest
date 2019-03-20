@@ -7,9 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by weijiangan on 02/12/2016.
- */
+
 
 public class Player extends Character {
     private int dx;
@@ -18,10 +16,14 @@ public class Player extends Character {
     private int invulnDur;
     private boolean JUMPING;
     private boolean PEAKED;
+    private boolean LANDED;
+    private boolean WALKING;
     private boolean GODMODE;
     private int LAND_Y;
     private Image jumpSprite;
     private Clip clip;
+    private Clip clip2;
+
 
     public Player() throws Exception {
         this(0, 0);
@@ -41,9 +43,13 @@ public class Player extends Character {
         
         jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);
         clip = AudioSystem.getClip();
-        clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Jump.wav").getPath())));
+        clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/Jump.wav").getPath())));
+        clip2 = AudioSystem.getClip();
+        clip2.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/step.wav").getPath())));
+
         this.curFrame = 0;
         JUMPING = false;
+        WALKING =true;
         GODMODE = false;
         invulnDur = 0;
         velocity = 40;
@@ -86,6 +92,12 @@ public class Player extends Character {
 
     public void updatePos() {
         x += dx;
+        if(WALKING && y==LAND_Y) {
+        	if(y==LAND_Y)
+        	clip2.start();
+        	clip2.loop(1);
+           // clip2.setFramePosition(0);
+        }
         if (JUMPING && !PEAKED) {
             if (y == LAND_Y) {
                 clip.start();
@@ -108,6 +120,7 @@ public class Player extends Character {
                 velocity += 3;
             } else {
                 y = LAND_Y;
+                
                 PEAKED = false;
                 velocity = 40;
             }

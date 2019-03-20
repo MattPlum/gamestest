@@ -43,9 +43,9 @@ public class Terrain {
         return w;
     }
 
-    public void scaleSprite(float factor) {
-        int newW = (int) (w * factor);
-        int newH = (int) (h * factor);
-        sprite = sprite.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+    public void scaleSprite(int x, int y) {
+//        int newW = (int) (w * factor);
+//        int newH = (int) (h * factor);
+        sprite = sprite.getScaledInstance(x, y, Image.SCALE_SMOOTH);
     }
 }
