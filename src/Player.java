@@ -148,8 +148,8 @@ public class Player extends Character {
     public void jump(boolean b) throws Exception {
         if (b) {
             if (!JUMPING && !PEAKED)
-                LAND_Y = y;
-            JUMPING = true;
+                //LAND_Y = y;
+            	JUMPING = true;
         } else JUMPING = false;
     }
 }

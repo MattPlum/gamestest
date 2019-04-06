@@ -24,6 +24,7 @@ public class Board extends JPanel implements ComponentListener {
     boolean isSloth=false;
     boolean isSquid=false;
     boolean isSurvey=false;
+    boolean isAssignment=false;
     private int score;
     private int scoreWidth;
     int enemyNumber = 0;
@@ -111,9 +112,11 @@ public class Board extends JPanel implements ComponentListener {
         	if(isSloth) {
         		slothScreen(g);
         	}else if(isSquid) {
-        		squidScreen(g);
+        		muscleScreen(g);
         	}else if(isSurvey) {
         		surveyScreen(g);
+        	}else if(isAssignment) {
+        		assignmentScreen(g);
         	}
         }
     }
@@ -162,26 +165,7 @@ public class Board extends JPanel implements ComponentListener {
         }
     }
 
-    private void drawHUD(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.setFont(scoreFont);
-        metric = g.getFontMetrics(scoreFont);
-        scoreWidth = metric.stringWidth(String.format("%d", score));
-        g.drawString(String.format("%d", score), frameWidth/2 - scoreWidth/2, 75);
-        Image heart = new ImageIcon(this.getClass().getResource("resources/HUD/hud_heartFull.png")).getImage();
-        //Image cross = new ImageIcon(this.getClass().getResource("resources/HUD/hud_x.png")).getImage();
 
-        int curLives = player.getLives();
-        for (int i= 0, x = 25; i < curLives; i++, x += 50) {
-            g.drawImage(heart, x, 25, null);
-        }
-        if (curLives == 0) {
-            PLAYGAME = false;
-            timer.stop();
-            repaint();
-        }
-        //g.drawImage(cross, frameWidth - 75, 25, null);
-    }
     
     private void slothScreen(Graphics g) {
     	showScreen = true;
@@ -189,7 +173,7 @@ public class Board extends JPanel implements ComponentListener {
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
-    private void squidScreen(Graphics g) {
+    private void muscleScreen(Graphics g) {
     	showScreen = true;
     	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/muscle_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
@@ -198,6 +182,12 @@ public class Board extends JPanel implements ComponentListener {
     private void surveyScreen(Graphics g) {
     	showScreen = true;
     	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/survey_answer.png")).getImage();
+        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
+    private void assignmentScreen(Graphics g) {
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
@@ -307,6 +297,9 @@ public class Board extends JPanel implements ComponentListener {
         	    Enemy enemy = new Survey(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
                 enemies.add(enemy);
                 //count =1;
+        	}else if (x==4) {
+        		Enemy enemy = new Assignment(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+        		enemies.add(enemy);
         	}
         	else {
         		PLAYGAME=false;
@@ -325,6 +318,7 @@ public class Board extends JPanel implements ComponentListener {
             isSloth=false;
             isSquid=false;
             isSurvey=false;
+            isAssignment= false;
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
             	
             	System.out.println(tmp.getClass().getSimpleName());
@@ -333,8 +327,9 @@ public class Board extends JPanel implements ComponentListener {
                }else if(tmp.getClass().getSimpleName() == "Squid") {
             	   isSquid=true;
                }else if(tmp.getClass().getSimpleName() == "Survey") {
-            	
             	   isSurvey=true;
+               }else if(tmp.getClass().getSimpleName() == "Assignment") {
+            	   isAssignment=true;
                }
             	enemies.remove(tmp);
             	PAUSEGAME=true;
@@ -342,6 +337,7 @@ public class Board extends JPanel implements ComponentListener {
 
                break;
                    
+               
             }
         }
     }
