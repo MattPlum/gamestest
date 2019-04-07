@@ -296,9 +296,9 @@ public class Board extends JPanel implements ComponentListener {
         	}else if (x ==3) {
         	    Enemy enemy = new Survey(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
                 enemies.add(enemy);
-                //count =1;
+                count =4;
         	}else if (x==4) {
-        		Enemy enemy = new Assignment(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+        		Enemy enemy = new Assignment(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
         		enemies.add(enemy);
         	}
         	else {
