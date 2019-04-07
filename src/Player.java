@@ -36,7 +36,7 @@ public class Player extends Character {
         this.y = y;
         sprite = new Image[FRAMES];
         for (int i = 0; i < FRAMES; i++) {
-        	Image newImage = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charwalk" + String.format("%02d", i+1) + ".png")).getImage().getScaledInstance(150, 205, Image.SCALE_DEFAULT);
+        	Image newImage = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charwalk" + String.format("%02d", i+1) + ".png")).getImage();
 
             sprite[i] = newImage;
         }
