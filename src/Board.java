@@ -173,25 +173,25 @@ public class Board extends JPanel implements ComponentListener {
     
     private void slothScreen(Graphics g) {
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/sloth_answer2.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/sloth_answerUD.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
     private void muscleScreen(Graphics g) {
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/muscle_answer.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/muscle_answerUD.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
     private void surveyScreen(Graphics g) {
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/survey_answer.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/survey_answerUD.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
     private void assignmentScreen(Graphics g) {
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answer.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answerUD.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
@@ -200,10 +200,10 @@ public class Board extends JPanel implements ComponentListener {
         String message1 = "Double Press Space to continue";
         metric = g.getFontMetrics(largeScoreFont);
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.YELLOW);
         g.fillRect(frameWidth/2-metric.stringWidth(message1)/2+40, 610, 345, 50);
         
-        g.setColor(Color.RED);
+        g.setColor(Color.BLUE);
         g.setFont(largeScoreFont);
         g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2+50, 650);
 
@@ -344,7 +344,7 @@ public class Board extends JPanel implements ComponentListener {
             isAssignment= false;
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
             	
-            	System.out.println(tmp.getClass().getSimpleName());
+            	//System.out.println(tmp.getClass().getSimpleName());
                if(tmp.getClass().getSimpleName() =="Sloth" ) {
             	   isSloth = true;
                }else if(tmp.getClass().getSimpleName() == "Squid") {
