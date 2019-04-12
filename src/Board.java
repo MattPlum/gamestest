@@ -109,6 +109,7 @@ public class Board extends JPanel implements ComponentListener {
         } 
         if(PAUSEGAME) {
         	pauseGame();
+        	drawHelp(g);
         	if(isSloth) {
         		slothScreen(g);
         	}else if(isSquid) {
@@ -195,7 +196,17 @@ public class Board extends JPanel implements ComponentListener {
         
     }
     private void drawHelp(Graphics g) {
-        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
+        Font largeScoreFont = new Font("Calibri", Font.BOLD, 25);
+        String message1 = "Double Press Space to continue";
+        metric = g.getFontMetrics(largeScoreFont);
+
+        g.setColor(Color.BLACK);
+        g.fillRect(frameWidth/2-metric.stringWidth(message1)/2+40, 610, 345, 50);
+        
+        g.setColor(Color.RED);
+        g.setFont(largeScoreFont);
+        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2+50, 650);
+
 
     }
     private void gameOver(Graphics g) {
