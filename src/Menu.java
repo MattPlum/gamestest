@@ -15,7 +15,7 @@ public class Menu extends JPanel{
     private boolean isSplash;
     private JPanel screen = new JPanel();
 
-    final BufferedImage bg = ImageIO.read (new File(getClass().getResource("resources/Menu/BG_img.jpg").getPath()));
+    final BufferedImage bg = ImageIO.read (new File(getClass().getResource("resources/Background/UD3.jpg").getPath()));
     final BufferedImage yogi = ImageIO.read (new File(getClass().getResource("resources/Player/p4_walk/PNG/charjump01.png").getPath()));
     //final BufferedImage logo = ImageIO.read (new File(getClass().getResource("resources/Menu/logo.png").getPath()));
     final BufferedImage startButton = ImageIO.read (new File(getClass().getResource("resources/Menu/startButton.png").getPath()));
@@ -45,9 +45,7 @@ public class Menu extends JPanel{
         //g.drawImage(logo, WIDTH / 2 - (logoWIDTH / 2), 30, logoWIDTH, logoHEIGHT, null);
 
         //draw start button
-        buttonWIDTH = 273;
-        buttonHEIGHT = 108;
-        g.drawImage(startButton, WIDTH / 2 - (buttonWIDTH / 2), HEIGHT / 2 - buttonHEIGHT + 30, buttonWIDTH, buttonHEIGHT, null);
+        g.drawImage(startButton, WIDTH / 2 - (buttonWIDTH / 2), HEIGHT / 2 - buttonHEIGHT, buttonWIDTH, buttonHEIGHT, null);
 
         //drawing the sun
 //        g.setColor(new Color(255, 231, 149));

@@ -12,6 +12,7 @@ public class Board extends JPanel implements ComponentListener {
     private final int SPAWN_INTERVAL = 35;
     private boolean PLAYGAME;
     private boolean PAUSEGAME = false;
+    private boolean GAMEOVER = false;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
 
@@ -102,12 +103,13 @@ public class Board extends JPanel implements ComponentListener {
         super.paintComponent(g);
 
         if (PLAYGAME) {
-            drawMountain(g);
+            drawBackground(g);
             drawLand(g);
             drawPlayer(g);
             drawEnemies(g);
         //    drawHUD(g);
-        } if(PAUSEGAME) {
+        } 
+        if(PAUSEGAME) {
         	pauseGame();
         	if(isSloth) {
         		slothScreen(g);
@@ -118,7 +120,8 @@ public class Board extends JPanel implements ComponentListener {
         	}else if(isAssignment) {
         		assignmentScreen(g);
         	}
-        }
+        }if(GAMEOVER) {
+        	gameOver(g);        }
     }
     
     public void pauseGame() {
@@ -130,9 +133,11 @@ public class Board extends JPanel implements ComponentListener {
 
 
 
-    private void drawMountain(Graphics g) {
-        for (int x = background.getInitX(); x < frameWidth; x += background.getW())
+    private void drawBackground(Graphics g) {
+        for (int x = background.getInitX(); x < frameWidth; x += background.getW()) {
             g.drawImage(background.getSprite(), x, 0, null);
+        }
+        	
     }
 
     private void drawLand(Graphics g) {
@@ -200,7 +205,7 @@ public class Board extends JPanel implements ComponentListener {
         metric = g.getFontMetrics(scoreFont);
         FontMetrics metric2 = g.getFontMetrics(scoreFont);
         scoreWidth = metric2.stringWidth(String.format("%d", score));
-        String message1 = "You failed to escape the snails!";
+        String message1 = "Thank you for playing!";
         String message2 = "Press space to restart";
         g.setColor(Color.WHITE);
         g.setFont(largeScoreFont);
@@ -256,6 +261,9 @@ public class Board extends JPanel implements ComponentListener {
                     PAUSEGAME = false;
                     player.jump(false);
                
+            }if(GAMEOVER) {
+            	PAUSEGAME= false;
+            	restartGame();
             }
         
         } else if (key == KeyEvent.VK_LEFT) {
@@ -300,10 +308,12 @@ public class Board extends JPanel implements ComponentListener {
         	}else if (x==4) {
         		Enemy enemy = new Assignment(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
         		enemies.add(enemy);
+        		count = 5;
         	}
-        	else {
+        	else if(x == 5){
         		PLAYGAME=false;
-        		PAUSEGAME=false;
+        		PAUSEGAME=true;
+        		GAMEOVER = true;
         	}
 
 
@@ -376,6 +386,7 @@ public class Board extends JPanel implements ComponentListener {
         enemies.clear();
         score = 0;
         PLAYGAME = true;
+        GAMEOVER = false;
         count=1;
         timer.start();
     }

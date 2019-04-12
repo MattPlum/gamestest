@@ -30,7 +30,7 @@ public class Game implements ActionListener, KeyListener {
         INGAME = false;
         try {
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/bgm2.wav").getPath())));
+            //clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/bgm2.wav").getPath())));
             clip.drain();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
@@ -79,7 +79,7 @@ public class Game implements ActionListener, KeyListener {
         //start button
         startGame = new JButton("Start Game");
         startGame.setOpaque(false);
-        startGame.setMinimumSize(new Dimension(START_BUTTON_W, START_BUTTON_H));
+        startGame.setMaximumSize(new Dimension(START_BUTTON_W, START_BUTTON_H));
         startGame.setContentAreaFilled(false);
         startGame.setBorderPainted(false);
         startGame.setFocusable(false); // rather than just setFocusable(false)

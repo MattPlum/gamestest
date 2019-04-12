@@ -54,10 +54,7 @@ public class Player extends Character {
         invulnDur = 0;
         velocity = 40;
     }
-    private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
-        BufferedImage dest = src.getSubimage(0, 0, rect.width, rect.height);
-        return dest; 
-     }
+
     public void setDx(int dx) {
         this.dx = dx;
     }
