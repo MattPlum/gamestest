@@ -55,12 +55,10 @@ public class Board extends JPanel implements ComponentListener {
         NUM_OF_SNAILS = 1;
         enemies = new ArrayList<>();
         scoreFont = new Font("Calibri", Font.BOLD, 56);
-        //cloud.scaleSprite(0.2f);
         ground = new Terrain(-5, "resources/Tiles/grassMid.png");
         ground2 = new Terrain(-5, "resources/Tiles/grassCenter.png");
 
         background = new Terrain(-1, "resources/Background/UD2.jpg");
-        //background.scaleSprite(3200, 850);
         player = new Player();
         player.setX(PLAYER_X);
         timer = new Timer(40, new ActionListener() {
@@ -196,22 +194,26 @@ public class Board extends JPanel implements ComponentListener {
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
+    private void drawHelp(Graphics g) {
+        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
+
+    }
     private void gameOver(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, frameWidth, frameHeight);
-        Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver.png")).getImage();
+        Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver2.png")).getImage();
         g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
         Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
         metric = g.getFontMetrics(scoreFont);
         FontMetrics metric2 = g.getFontMetrics(scoreFont);
         scoreWidth = metric2.stringWidth(String.format("%d", score));
         String message1 = "Thank you for playing!";
-        String message2 = "Press space to restart";
+        String message2 = "Press space to play again";
         g.setColor(Color.WHITE);
         g.setFont(largeScoreFont);
-        g.drawString(String.format("%d", score), frameWidth/2-scoreWidth, 200);
+        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2-200, 100);
         g.setFont(scoreFont);
-        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2, 100);
+        g.drawString("Time Played: "+ String.format("%d", score) + " seconds", frameWidth/2-scoreWidth-270, 200);
         g.drawString(message2, frameWidth/2-metric.stringWidth(message2)/2, frameHeight - 100);
     }
     
