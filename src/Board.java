@@ -1,7 +1,13 @@
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -12,10 +18,10 @@ public class Board extends JPanel implements ComponentListener {
     private final int SPAWN_INTERVAL = 35;
     private boolean PLAYGAME;
     private boolean PAUSEGAME = false;
-    private boolean GAMEOVER = false;
+    private boolean GAMEOVER = true;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
-
+    
     private int PLAYER_X;
     private int PLAYER_Y;
     private int SNAIL_SPEED;
@@ -41,10 +47,15 @@ public class Board extends JPanel implements ComponentListener {
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     Story story = new Story(SCREEN_WIDTH, SCREEN_HEIGHT);
     boolean showScreen = false;
+    
+    Clip clip;
 
     public Board() throws Exception {
         addComponentListener(this);
         setDoubleBuffered(true);
+		clip = AudioSystem.getClip();
+        clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/well_done.wav").getPath())));
+
         this.frameWidth = getWidth();
         this.frameHeight = getHeight();
         score = 0;
@@ -120,9 +131,13 @@ public class Board extends JPanel implements ComponentListener {
         		assignmentScreen(g);
         	}
         }if(GAMEOVER) {
-        	gameOver(g);        }
+        	gameOver(g);  
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        	
+        }
     }
-    
+   
     public void pauseGame() {
 	      if (timer.isRunning()) {
 		      timer.stop();
@@ -210,6 +225,7 @@ public class Board extends JPanel implements ComponentListener {
 
     }
     private void gameOver(Graphics g) {
+    	PAUSEGAME=true;
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, frameWidth, frameHeight);
         Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver2.png")).getImage();
@@ -218,7 +234,7 @@ public class Board extends JPanel implements ComponentListener {
         metric = g.getFontMetrics(scoreFont);
         FontMetrics metric2 = g.getFontMetrics(scoreFont);
         scoreWidth = metric2.stringWidth(String.format("%d", score));
-        String message1 = "Thank you for playing!";
+        String message1 = "Congratulations! Thanks for playing";
         String message2 = "Press space to play again";
         g.setColor(Color.WHITE);
         g.setFont(largeScoreFont);
@@ -276,6 +292,7 @@ public class Board extends JPanel implements ComponentListener {
                
             }if(GAMEOVER) {
             	PAUSEGAME= false;
+            	GAMEOVER=false;
             	restartGame();
             }
         
@@ -327,6 +344,7 @@ public class Board extends JPanel implements ComponentListener {
         		PLAYGAME=false;
         		PAUSEGAME=true;
         		GAMEOVER = true;
+        		
         	}
 
 
@@ -393,6 +411,7 @@ public class Board extends JPanel implements ComponentListener {
 
 
     public void restartGame() {
+        clip.stop();	//end clapping
         player.setX((int) (0.15 * frameWidth));
         player.setY(PLAYER_Y);
        // player.setLives(3);
@@ -400,6 +419,7 @@ public class Board extends JPanel implements ComponentListener {
         score = 0;
         PLAYGAME = true;
         GAMEOVER = false;
+        PAUSEGAME=false;
         count=1;
         timer.start();
     }
