@@ -18,7 +18,7 @@ public class Board extends JPanel implements ComponentListener {
     private final int SPAWN_INTERVAL = 35;
     private boolean PLAYGAME;
     private boolean PAUSEGAME = false;
-    private boolean GAMEOVER = true;
+    private boolean GAMEOVER = false;
     private int frameWidth, frameHeight;
     private int LAND_HEIGHT = (int) (0.8 * frameHeight);
     
@@ -49,13 +49,15 @@ public class Board extends JPanel implements ComponentListener {
     boolean showScreen = false;
     
     Clip clip;
+    Clip clip2;
 
     public Board() throws Exception {
         addComponentListener(this);
         setDoubleBuffered(true);
-		clip = AudioSystem.getClip();
+		clip = AudioSystem.getClip();	//endscreen sound
         clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/well_done.wav").getPath())));
-
+		clip2= AudioSystem.getClip();	//prompt sound
+        clip2.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/prompt2.wav").getPath())));
         this.frameWidth = getWidth();
         this.frameHeight = getHeight();
         score = 0;
@@ -121,6 +123,8 @@ public class Board extends JPanel implements ComponentListener {
         if(PAUSEGAME) {
         	pauseGame();
         	drawHelp(g);
+        	clip2.start();
+        	clip2.setFramePosition(0);
         	if(isSloth) {
         		slothScreen(g);
         	}else if(isSquid) {
@@ -293,6 +297,8 @@ public class Board extends JPanel implements ComponentListener {
             }if(GAMEOVER) {
             	PAUSEGAME= false;
             	GAMEOVER=false;
+            	clip2.stop();
+
             	restartGame();
             }
         

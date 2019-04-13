@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 
 
-
 public class Player extends Character {
     private int dx;
     private int velocity;
@@ -16,7 +15,6 @@ public class Player extends Character {
     private int invulnDur;
     private boolean JUMPING;
     private boolean PEAKED;
-    private boolean LANDED;
     private boolean WALKING;
     private boolean GODMODE;
     private int LAND_Y;

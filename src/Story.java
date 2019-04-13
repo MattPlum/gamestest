@@ -7,9 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by Sam on 12/5/16.
- */
+
 public class Story extends JPanel implements KeyListener {
     private static int WIDTH;
     private static int HEIGHT;
@@ -19,7 +17,7 @@ public class Story extends JPanel implements KeyListener {
             new ImageIcon(this.getClass().getResource("resources/Story/welcome.png")).getImage(),
             new ImageIcon(this.getClass().getResource("resources/Story/how_to_play.png")).getImage(),
             new ImageIcon(this.getClass().getResource("resources/Story/begin_game.png")).getImage(),
-//            new ImageIcon(this.getClass().getResource("resources/Story/3.jpg")).getImage(),
+            new ImageIcon(this.getClass().getResource("resources/Story/resources.png")).getImage(),
 //            new ImageIcon(this.getClass().getResource("resources/Story/4.jpg")).getImage(),
 //            new ImageIcon(this.getClass().getResource("resources/Story/5.jpg")).getImage(),
     };

@@ -30,7 +30,7 @@ public class Game implements ActionListener, KeyListener {
         INGAME = false;
         try {
             clip = AudioSystem.getClip();
-            //clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/bgm2.wav").getPath())));
+            clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/bgm2.wav").getPath())));
             clip.drain();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
