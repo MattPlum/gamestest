@@ -1,10 +1,13 @@
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class Game implements ActionListener, KeyListener {
@@ -29,9 +32,12 @@ public class Game implements ActionListener, KeyListener {
     private void initGame() throws IOException {
         INGAME = false;
         try {
+        	InputStream is = getClass().getResourceAsStream("resources/Sounds/bgm2.wav");
+            InputStream bufferedIn = new BufferedInputStream(is);
+
+        	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/bgm2.wav").getPath())));
-            clip.drain();
+            clip.open(audioInputStream);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }

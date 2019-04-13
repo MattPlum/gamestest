@@ -1,11 +1,7 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 
 public class Story extends JPanel implements KeyListener {
@@ -18,8 +14,7 @@ public class Story extends JPanel implements KeyListener {
             new ImageIcon(this.getClass().getResource("resources/Story/how_to_play.png")).getImage(),
             new ImageIcon(this.getClass().getResource("resources/Story/begin_game.png")).getImage(),
             new ImageIcon(this.getClass().getResource("resources/Story/resources.png")).getImage(),
-//            new ImageIcon(this.getClass().getResource("resources/Story/4.jpg")).getImage(),
-//            new ImageIcon(this.getClass().getResource("resources/Story/5.jpg")).getImage(),
+
     };
 
     public Story(int w, int h) {

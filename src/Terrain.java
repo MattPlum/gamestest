@@ -6,7 +6,6 @@ public class Terrain {
     private int initX;
     private int w, h;
     private int pace;
-    private double ratio;
     private Image sprite;
 
     Terrain(int pace, String imgPath) {

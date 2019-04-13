@@ -15,14 +15,12 @@ public class Menu extends JPanel{
     public int iWIDTH = WIDTH, iHEIGHT = HEIGHT, buttonWIDTH = 273, buttonHEIGHT = 108;
     private boolean isSplash;
     private JPanel screen = new JPanel();
-
-    final BufferedImage bg = ImageIO.read (new File(getClass().getResource("resources/Background/UD3.jpg").getPath()));
-    final BufferedImage yogi = ImageIO.read (new File(getClass().getResource("resources/Player/p4_walk/PNG/charjump01.png").getPath()));
-    //final BufferedImage logo = ImageIO.read (new File(getClass().getResource("resources/Menu/logo.png").getPath()));
-    final BufferedImage startButton = ImageIO.read (new File(getClass().getResource("resources/Menu/startButton.png").getPath()));
     
-    private Font scoreFont=new Font("Calibri", Font.BOLD, 56);
-    private FontMetrics metric;
+    final BufferedImage bg = ImageIO.read(Menu.class.getResourceAsStream("resources/Background/UD3.png"));
+    final BufferedImage yogi = ImageIO.read(Menu.class.getResourceAsStream("resources/Player/p4_walk/PNG/charjump01.png"));
+    final BufferedImage startButton = ImageIO.read(Menu.class.getResourceAsStream("resources/Menu/startButton.png"));
+
+
 
     private int frameWidth, frameHeight;
 
@@ -30,7 +28,6 @@ public class Menu extends JPanel{
 		this.isSplash = isSplash;
         this.frameWidth = getWidth();
         this.frameHeight = getHeight();
-        scoreFont = new Font("Calibri", Font.BOLD, 56);
 
         if (isSplash == true) {
             screen.repaint();
@@ -43,18 +40,6 @@ public class Menu extends JPanel{
         //draw BG
         g.drawImage(bg, 0, 0, iWIDTH, iHEIGHT, null);
         
-        //draw game title
-        metric = g.getFontMetrics(scoreFont);
-        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
-
-        String message1 = "My Leadership, The Game";
-        g.setColor(Color.YELLOW);
-        g.fillRect(frameWidth/2-metric.stringWidth(message1)/2+718, 210, 1100, 150);
-
-        g.setColor(Color.BLUE);
-        g.setFont(largeScoreFont);
-        g.drawString(message1, frameWidth/2-metric.stringWidth(message1)/2+730, 330);
-        
 
         //draw Me
         int yogiWIDTH = 233, yogiHEIGHT = 290;
@@ -62,8 +47,6 @@ public class Menu extends JPanel{
 
         //draw start button
         g.drawImage(startButton, WIDTH / 2 - (buttonWIDTH / 2), HEIGHT / 2 - buttonHEIGHT, buttonWIDTH, buttonHEIGHT, null);
-
-
 
 		repaint();
 	}

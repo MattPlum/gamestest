@@ -1,11 +1,12 @@
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class Player extends Character {
@@ -40,11 +41,23 @@ public class Player extends Character {
         }
         
         jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);
-        clip = AudioSystem.getClip();
-        clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/Jump.wav").getPath())));
-        clip2 = AudioSystem.getClip();
-        clip2.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/step.wav").getPath())));
-
+       try {
+           jumpSprite = new ImageIcon(this.getClass().getResource("resources/Player/p4_walk/PNG/charjump02.png")).getImage().getScaledInstance(150, 200, Image.SCALE_DEFAULT);
+           
+           InputStream is = getClass().getResourceAsStream("resources/Sounds/Jump.wav");
+           InputStream bufferedIn = new BufferedInputStream(is);
+           AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
+           clip = AudioSystem.getClip();
+           clip.open(audioInputStream);
+           
+           InputStream is2 = getClass().getResourceAsStream("resources/Sounds/step.wav");
+           InputStream bufferedIn2 = new BufferedInputStream(is2);
+           AudioInputStream audioInputStream2 = AudioSystem.getAudioInputStream(bufferedIn2);
+           clip2 = AudioSystem.getClip();
+           clip2.open(audioInputStream2);
+       }catch (Exception e) {
+           JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+       }
         this.curFrame = 0;
         JUMPING = false;
         WALKING =true;

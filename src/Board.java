@@ -1,3 +1,4 @@
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -6,11 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 
 public class Board extends JPanel implements ComponentListener {
@@ -41,8 +44,7 @@ public class Board extends JPanel implements ComponentListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private Iterator<Enemy> iter;
-    private JPanel topPanel;
-    private Game game;
+
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     Story story = new Story(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -54,10 +56,22 @@ public class Board extends JPanel implements ComponentListener {
     public Board() throws Exception {
         addComponentListener(this);
         setDoubleBuffered(true);
-		clip = AudioSystem.getClip();	//endscreen sound
-        clip.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/well_done.wav").getPath())));
-		clip2= AudioSystem.getClip();	//prompt sound
-        clip2.open(AudioSystem.getAudioInputStream(new File(getClass().getResource("resources/Sounds/prompt2.wav").getPath())));
+        try {
+            InputStream is = getClass().getResourceAsStream("resources/Sounds/well_done.wav");
+            InputStream bufferedIn = new BufferedInputStream(is);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
+    		clip = AudioSystem.getClip();	//endscreen sound
+            clip.open(audioInputStream);
+    		
+            InputStream is2 = getClass().getResourceAsStream("resources/Sounds/prompt2.wav");
+            InputStream bufferedIn2 = new BufferedInputStream(is2);
+            AudioInputStream audioInputStream2 = AudioSystem.getAudioInputStream(bufferedIn2);
+            clip2= AudioSystem.getClip();	//prompt sound
+    		clip2.open(audioInputStream2);
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to load background music: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         this.frameWidth = getWidth();
         this.frameHeight = getHeight();
         score = 0;
