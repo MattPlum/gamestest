@@ -35,6 +35,7 @@ public class Board extends JPanel implements ComponentListener {
     boolean isSquid=false;
     boolean isSurvey=false;
     boolean isAssignment=false;
+    boolean isDP = false;
     private int score;
     private int scoreWidth;
     int enemyNumber = 0;
@@ -147,6 +148,8 @@ public class Board extends JPanel implements ComponentListener {
         		surveyScreen(g);
         	}else if(isAssignment) {
         		assignmentScreen(g);
+        	}else if(isDP) {
+        		DPScreen(g);
         	}
         }if(GAMEOVER) {
         	gameOver(g);  
@@ -223,6 +226,12 @@ public class Board extends JPanel implements ComponentListener {
         
     }
     private void assignmentScreen(Graphics g) {
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answerUD.png")).getImage();
+        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
+    private void DPScreen(Graphics g) {
     	showScreen = true;
     	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answerUD.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
@@ -361,6 +370,11 @@ public class Board extends JPanel implements ComponentListener {
         		count = 5;
         	}
         	else if(x == 5){
+          		Enemy enemy = new DP(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+        		enemies.add(enemy);
+        		count = 6;
+        		
+        	}  	else if(x == 6){
         		PLAYGAME=false;
         		PAUSEGAME=true;
         		GAMEOVER = true;
@@ -380,6 +394,7 @@ public class Board extends JPanel implements ComponentListener {
             isSquid=false;
             isSurvey=false;
             isAssignment= false;
+            isDP = false;
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
             	
             	//System.out.println(tmp.getClass().getSimpleName());
@@ -391,6 +406,8 @@ public class Board extends JPanel implements ComponentListener {
             	   isSurvey=true;
                }else if(tmp.getClass().getSimpleName() == "Assignment") {
             	   isAssignment=true;
+               }else if(tmp.getClass().getSimpleName() == "DP") {
+            	   isDP=true;
                }
             	enemies.remove(tmp);
             	PAUSEGAME=true;
