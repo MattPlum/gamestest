@@ -2,9 +2,9 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Assignment extends Enemy{
+public class SkillBuild extends Enemy{
 
-	public Assignment(int x, int y, int speed) {
+	public SkillBuild(int x, int y, int speed) {
 		super(x, y, speed);
 	   	FRAMES = 30;
 	    this.x = x;
@@ -13,12 +13,9 @@ public class Assignment extends Enemy{
 	    sprite = new Image[FRAMES];
 	
 	    for (int i = 0; i < FRAMES; i++) {
-	    		sprite[i] = new ImageIcon(this.getClass().getResource("resources/Enemies/ethical/ethical" + "_(" + (i+1) + ").png")).getImage();
+    		sprite[i] = new ImageIcon(this.getClass().getResource("resources/Enemies/monkey/ethical" + "_(" + (i+1) + ").png")).getImage();
 
 	    }
-	    
-	    
 	}
-
 
 }

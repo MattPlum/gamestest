@@ -32,9 +32,9 @@ public class Board extends JPanel implements ComponentListener {
     private int i = 0;
     int count =1;
     boolean isSloth=false;
-    boolean isSquid=false;
-    boolean isSurvey=false;
-    boolean isAssignment=false;
+    boolean isSkillBuild=false;
+    boolean isCORE=false;
+    boolean isWorkOn=false;
     boolean isDP = false;
     private int score;
     private int scoreWidth;
@@ -141,15 +141,16 @@ public class Board extends JPanel implements ComponentListener {
         	clip2.start();
         	clip2.setFramePosition(0);
         	if(isSloth) {
-        		slothScreen(g);
-        	}else if(isSquid) {
-        		muscleScreen(g);
-        	}else if(isSurvey) {
-        		surveyScreen(g);
-        	}else if(isAssignment) {
-        		assignmentScreen(g);
+        		analogyScreen(g);
+        	}else if(isSkillBuild) {
+        		skillBuildScreen(g);
+        	}else if(isCORE) {
+        		coreScreen(g);
+        	}else if(isWorkOn) {
+        		workOnScreen(g);
+
         	}else if(isDP) {
-        		DPScreen(g);
+        		dpScreen(g);
         	}
         }if(GAMEOVER) {
         	gameOver(g);  
@@ -205,38 +206,39 @@ public class Board extends JPanel implements ComponentListener {
         }
     }
 
-
     
-    private void slothScreen(Graphics g) {
+    private void analogyScreen(Graphics g) {	//sloth
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/sloth_answerUD.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/Analogy_answer.png")).getImage();
+    	g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
+        
+    }
+    private void dpScreen(Graphics g) {			//D art
+    	showScreen = true;
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/DP_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
-    private void muscleScreen(Graphics g) {
+    private void coreScreen(Graphics g) {		//CORE
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/muscle_answerUD.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/CORE_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
-    private void surveyScreen(Graphics g) {
+
+    private void skillBuildScreen(Graphics g) {		//monkey
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/survey_answerUD.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/SkillBuild_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
-    private void assignmentScreen(Graphics g) {
+    private void workOnScreen(Graphics g) {		//Squidward
     	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answerUD.png")).getImage();
+    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/effecleader_answer.png")).getImage();
         g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
         
     }
-    private void DPScreen(Graphics g) {
-    	showScreen = true;
-    	Image answer = new ImageIcon(this.getClass().getResource("resources/Answers/assignment_answerUD.png")).getImage();
-        g.drawImage(answer, (frameWidth / 2) - (answer.getWidth(null) / 2), (frameHeight / 2)-200 - (answer.getHeight(null) / 2), null);
-        
-    }
+
     private void drawHelp(Graphics g) {
         Font largeScoreFont = new Font("Calibri", Font.BOLD, 25);
         String message1 = "Double Press Space to continue";
@@ -257,7 +259,7 @@ public class Board extends JPanel implements ComponentListener {
         g.fillRect(0, 0, frameWidth, frameHeight);
         Image gameOver = new ImageIcon(this.getClass().getResource("resources/Menu/gameOver2.png")).getImage();
         g.drawImage(gameOver, (frameWidth / 2) - (gameOver.getWidth(null) / 2), (frameHeight / 2) - (gameOver.getHeight(null) / 2), null);
-        Font largeScoreFont = new Font("Calibri", Font.BOLD, 100);
+        Font largeScoreFont = new Font("Calibri", Font.BOLD, 75);
         metric = g.getFontMetrics(scoreFont);
         FontMetrics metric2 = g.getFontMetrics(scoreFont);
         scoreWidth = metric2.stringWidth(String.format("%d", score));
@@ -353,24 +355,25 @@ public class Board extends JPanel implements ComponentListener {
     private void spawnEnemies(int x) {
         if (enemies.size() < NUM_OF_SNAILS) {
         	if(x ==1) {
-        		Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
+        		Enemy enemy = new Sloth(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);	//analogy
             	enemies.add(enemy);
             	count =2;
         	}else if(x == 2) {
-              Enemy enemy = new Squid(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
-              enemies.add(enemy);
-              count =3;
+          		Enemy enemy = new DP(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);	//DP
+          		enemies.add(enemy);
+          		count =3;
         	}else if (x ==3) {
-        	    Enemy enemy = new Survey(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+        	    Enemy enemy = new CORE(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);		//core
                 enemies.add(enemy);
                 count =4;
         	}else if (x==4) {
-        		Enemy enemy = new Assignment(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);
+                Enemy enemy = new SkillBuild(frameWidth + 400, LAND_HEIGHT - 400 + 5, SNAIL_SPEED);	//work on
         		enemies.add(enemy);
         		count = 5;
         	}
         	else if(x == 5){
-          		Enemy enemy = new DP(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);
+        		Enemy enemy = new WorkOn(frameWidth + 400, LAND_HEIGHT - 300 + 5, SNAIL_SPEED);		//skill
+
         		enemies.add(enemy);
         		count = 6;
         		
@@ -391,21 +394,21 @@ public class Board extends JPanel implements ComponentListener {
         while (iter.hasNext()) {
             Enemy tmp = iter.next();
             isSloth=false;
-            isSquid=false;
-            isSurvey=false;
-            isAssignment= false;
+            isSkillBuild=false;
+            isCORE=false;
+            isWorkOn= false;
             isDP = false;
             if(collisionHelper(player.getBounds(), tmp.getBounds(), player.getBI(), tmp.getBI())) {
             	
             	//System.out.println(tmp.getClass().getSimpleName());
                if(tmp.getClass().getSimpleName() =="Sloth" ) {
             	   isSloth = true;
-               }else if(tmp.getClass().getSimpleName() == "Squid") {
-            	   isSquid=true;
-               }else if(tmp.getClass().getSimpleName() == "Survey") {
-            	   isSurvey=true;
-               }else if(tmp.getClass().getSimpleName() == "Assignment") {
-            	   isAssignment=true;
+               }else if(tmp.getClass().getSimpleName() == "SkillBuild") {
+            	   isSkillBuild=true;
+               }else if(tmp.getClass().getSimpleName() == "CORE") {
+            	   isCORE=true;
+               }else if(tmp.getClass().getSimpleName() == "WorkOn") {
+            	   isWorkOn=true;
                }else if(tmp.getClass().getSimpleName() == "DP") {
             	   isDP=true;
                }
